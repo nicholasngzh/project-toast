@@ -18,7 +18,7 @@ const ICONS_BY_VARIANT = {
   error: AlertOctagon,
 }
 
-function Toast({ message, variant, dismiss }) {
+function Toast({ children, variant, dismiss }) {
   if (!Object.keys(ICONS_BY_VARIANT).includes(variant)) {
     return <></>
   }
@@ -30,7 +30,7 @@ function Toast({ message, variant, dismiss }) {
       <div className={styles.iconContainer}>
         <IconToRender size={24} />
       </div>
-      <p className={styles.content}>{message}</p>
+      <p className={styles.content}>{children}</p>
       <button
         onClick={() => {
           dismiss()

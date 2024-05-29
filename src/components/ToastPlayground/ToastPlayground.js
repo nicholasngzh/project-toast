@@ -5,6 +5,7 @@ import Button from "../Button"
 import styles from "./ToastPlayground.module.css"
 
 import Toast from "../Toast"
+import ToastShelf from "../ToastShelf/ToastShelf"
 
 const VARIANT_OPTIONS = ["notice", "warning", "success", "error"]
 
@@ -13,13 +14,27 @@ function ToastPlayground() {
   const [selectedVariant, setSelectedVariant] = React.useState(
     VARIANT_OPTIONS[0]
   )
-  const [showToast, setShowToast] = React.useState(false)
+  const [toastList, setToastList] = React.useState([])
 
   const handlePopToast = (event) => {
     event.preventDefault()
-    console.log(message)
-    console.log(selectedVariant)
-    setShowToast(true)
+    const newToast = {
+      message: message,
+      variant: selectedVariant,
+      key: crypto.randomUUID(),
+    }
+    const newToastList = [...toastList]
+    newToastList.push(newToast)
+    setToastList(newToastList)
+    setMessage("")
+    setSelectedVariant(VARIANT_OPTIONS[0])
+  }
+
+  const handleDeleteToast = (key) => {
+    const newToastList = [...toastList].filter(
+      (toastObject) => toastObject.key !== key
+    )
+    setToastList(newToastList)
   }
 
   return (
@@ -29,15 +44,7 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      {showToast && (
-        <Toast
-          message={message}
-          variant={selectedVariant}
-          dismiss={() => {
-            setShowToast(false)
-          }}
-        ></Toast>
-      )}
+      <ToastShelf toastList={toastList} onDeleteToast={handleDeleteToast} />
 
       <form className={styles.controlsWrapper} onSubmit={handlePopToast}>
         <div className={styles.row}>
