@@ -6,6 +6,7 @@ import styles from "./ToastPlayground.module.css"
 
 import Toast from "../Toast"
 import ToastShelf from "../ToastShelf/ToastShelf"
+import { ToastContext } from "../ToastProvider/ToastProvider"
 
 const VARIANT_OPTIONS = ["notice", "warning", "success", "error"]
 
@@ -14,27 +15,18 @@ function ToastPlayground() {
   const [selectedVariant, setSelectedVariant] = React.useState(
     VARIANT_OPTIONS[0]
   )
-  const [toastList, setToastList] = React.useState([])
+  const { toastList, handleAddToast, handleDeleteToast } =
+    React.useContext(ToastContext)
 
   const handlePopToast = (event) => {
     event.preventDefault()
-    const newToast = {
+    handleAddToast({
       message: message,
       variant: selectedVariant,
       key: crypto.randomUUID(),
-    }
-    const newToastList = [...toastList]
-    newToastList.push(newToast)
-    setToastList(newToastList)
+    })
     setMessage("")
     setSelectedVariant(VARIANT_OPTIONS[0])
-  }
-
-  const handleDeleteToast = (key) => {
-    const newToastList = [...toastList].filter(
-      (toastObject) => toastObject.key !== key
-    )
-    setToastList(newToastList)
   }
 
   return (
