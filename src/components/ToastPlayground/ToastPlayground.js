@@ -4,6 +4,8 @@ import Button from "../Button"
 
 import styles from "./ToastPlayground.module.css"
 
+import Toast from "../Toast"
+
 const VARIANT_OPTIONS = ["notice", "warning", "success", "error"]
 
 function ToastPlayground() {
@@ -11,11 +13,13 @@ function ToastPlayground() {
   const [selectedVariant, setSelectedVariant] = React.useState(
     VARIANT_OPTIONS[0]
   )
+  const [showToast, setShowToast] = React.useState(false)
 
   const handlePopToast = (event) => {
     event.preventDefault()
     console.log(message)
     console.log(selectedVariant)
+    setShowToast(true)
   }
 
   return (
@@ -24,6 +28,16 @@ function ToastPlayground() {
         <img alt="Cute toast mascot" src="/toast.png" />
         <h1>Toast Playground</h1>
       </header>
+
+      {showToast && (
+        <Toast
+          message={message}
+          variant={selectedVariant}
+          dismiss={() => {
+            setShowToast(false)
+          }}
+        ></Toast>
+      )}
 
       <form className={styles.controlsWrapper} onSubmit={handlePopToast}>
         <div className={styles.row}>
