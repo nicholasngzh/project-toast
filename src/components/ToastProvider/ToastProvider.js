@@ -16,11 +16,29 @@ function ToastProvider({ children }) {
     setToastList(newToastList)
   }
 
+  React.useEffect(() => {
+    const handleEscapeKeyDown = (event) => {
+      if (event.code === "Escape") {
+        setToastList([])
+      }
+    }
+    window.addEventListener("keydown", handleEscapeKeyDown)
+
+    return () => {
+      window.removeEventListener("keydown", handleEscapeKeyDown)
+    }
+  }, [])
+
   const [toastList, setToastList] = React.useState([])
 
   return (
     <ToastContext.Provider
-      value={{ toastList, setToastList, handleDeleteToast, handleAddToast }}
+      value={{
+        toastList,
+        setToastList,
+        handleDeleteToast,
+        handleAddToast,
+      }}
     >
       {children}
     </ToastContext.Provider>
